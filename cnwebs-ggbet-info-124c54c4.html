@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ggbet · 信息与场景卡片</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+            background: linear-gradient(145deg, #fce4b8 0%, #fbc2a0 45%, #f5b491 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem 1rem;
+            line-height: 1.6;
+            color: #2e241f;
+        }
+
+        .page-wrapper {
+            max-width: 1120px;
+            width: 100%;
+        }
+
+        /* 主视觉 / hero */
+        .hero {
+            background: rgba(255, 255, 240, 0.55);
+            backdrop-filter: blur(4px);
+            border-radius: 48px 48px 32px 32px;
+            padding: 2.8rem 2.2rem 2.4rem;
+            margin-bottom: 2.8rem;
+            text-align: center;
+            box-shadow: 0 12px 28px rgba(0,0,0,0.06);
+        }
+
+        .hero h1 {
+            font-size: 2.8rem;
+            font-weight: 550;
+            letter-spacing: -0.01em;
+            color: #3a2b20;
+        }
+
+        .hero h1 span {
+            background: #ffffffb3;
+            padding: 0.1rem 0.6rem;
+            border-radius: 40px;
+            display: inline-block;
+            backdrop-filter: blur(4px);
+            font-weight: 600;
+        }
+
+        .hero p {
+            margin-top: 0.9rem;
+            font-size: 1.15rem;
+            color: #4d382b;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* 卡片网格 */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.8rem;
+            margin-bottom: 2.8rem;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 32px;
+            padding: 1.8rem 1.6rem 2rem;
+            box-shadow: 0 8px 24px rgba(120, 70, 30, 0.08);
+            backdrop-filter: blur(2px);
+            transition: transform 0.15s ease, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 18px 36px rgba(100, 60, 20, 0.12);
+        }
+
+        .card-icon {
+            display: inline-flex;
+            width: 44px;
+            height: 44px;
+            background: #fae2cf;
+            border-radius: 18px;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            margin-bottom: 0.8rem;
+            color: #6f4f34;
+        }
+
+        .card h2 {
+            font-size: 1.5rem;
+            font-weight: 540;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.5rem;
+            color: #3b2c1f;
+        }
+
+        .card p {
+            font-size: 0.98rem;
+            color: #4e3d30;
+            margin-bottom: 0.6rem;
+            flex: 1;
+        }
+
+        .card .tag {
+            background: #f5e3d6;
+            color: #4a362a;
+            padding: 0.25rem 0.9rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            display: inline-block;
+            width: fit-content;
+            margin-top: 0.5rem;
+        }
+
+        /* 适合人群横向卡片组 */
+        .audience-section {
+            background: rgba(255, 247, 235, 0.60);
+            backdrop-filter: blur(4px);
+            border-radius: 40px;
+            padding: 2rem 2rem 1.8rem;
+            margin-bottom: 2.8rem;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.04);
+        }
+
+        .audience-section h2 {
+            font-size: 1.6rem;
+            font-weight: 520;
+            margin-bottom: 1.6rem;
+            color: #3a2c1f;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .audience-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.2rem;
+        }
+
+        .audience-item {
+            background: #ffffff;
+            border-radius: 40px;
+            padding: 0.8rem 1.6rem 0.8rem 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+            font-size: 1rem;
+            color: #2f241c;
+        }
+
+        .audience-item .emoji-bg {
+            background: #f7dccd;
+            width: 32px;
+            height: 32px;
+            border-radius: 30px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        /* 自然链接段落 */
+        .link-paragraph {
+            background: #ffffff;
+            border-radius: 32px;
+            padding: 1.8rem 2rem;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.04);
+        }
+
+        .link-paragraph p {
+            font-size: 1.02rem;
+            color: #3f3227;
+        }
+
+        .link-paragraph a {
+            color: #8f562f;
+            background: #fae6d8;
+            padding: 0.1rem 1rem 0.15rem;
+            border-radius: 40px;
+            text-decoration: none;
+            font-weight: 520;
+            display: inline-block;
+            transition: background 0.2s, box-shadow 0.2s;
+            box-shadow: 0 2px 6px rgba(170, 100, 50, 0.08);
+            line-height: 1.7;
+        }
+
+        .link-paragraph a:hover {
+            background: #f2d1bb;
+            box-shadow: 0 4px 12px rgba(140, 80, 30, 0.15);
+        }
+
+        /* FAQ 摘要卡片 */
+        .faq-mini {
+            background: #fffff7;
+            border-radius: 32px;
+            padding: 1.6rem 2rem 2rem;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.04);
+            margin-bottom: 2rem;
+        }
+
+        .faq-mini h3 {
+            font-size: 1.3rem;
+            font-weight: 520;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #352a20;
+            margin-bottom: 1rem;
+        }
+
+        .faq-item {
+            display: flex;
+            gap: 1rem;
+            padding: 0.7rem 0;
+            border-bottom: 1px solid #f0ded2;
+        }
+
+        .faq-item:last-of-type {
+            border-bottom: 0;
+        }
+
+        .faq-item .q {
+            font-weight: 540;
+            color: #3b2b1e;
+            min-width: 5rem;
+        }
+
+        .faq-item .a {
+            color: #4f3c2e;
+        }
+
+        .faq-item .a a {
+            color: #7b5437;
+            text-decoration: underline wavy #dbbca9 1px;
+            text-underline-offset: 4px;
+            font-weight: 500;
+        }
+
+        .faq-item .a a:hover {
+            background: #fae1cf;
+            text-decoration: none;
+            border-radius: 20px;
+            padding: 0 0.3rem;
+        }
+
+        /* 底部 */
+        .footer-note {
+            font-size: 0.85rem;
+            color: #5a4538;
+            text-align: center;
+            opacity: 0.8;
+            padding: 1.2rem 0 0.2rem;
+            border-top: 1px solid #e7cfbe;
+            margin-top: 0.5rem;
+        }
+
+        @media (max-width: 640px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            .card-grid {
+                gap: 1.2rem;
+            }
+            .audience-grid {
+                flex-direction: column;
+            }
+            .faq-item {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="page-wrapper">
+    <!-- 主视觉 -->
+    <div class="hero">
+        <h1><span>ggbet</span> · 信息卡片</h1>
+        <p>从平台功能到场景连接，一份围绕「ggbet」的轻量介绍，涵盖用途、受众与常见问题。</p>
+    </div>
+
+    <!-- 用途卡片 -->
+    <div class="card-grid">
+        <div class="card">
+            <div class="card-icon">📋</div>
+            <h2>内容索引</h2>
+            <p>聚合多个实用模块，包括指南、更新和社区讨论，方便快速定位兴趣点。结构偏向扁平化，减少点击层级。</p>
+            <span class="tag">导航</span>
+        </div>
+        <div class="card">
+            <div class="card-icon">⚙️</div>
+            <h2>场景工具</h2>
+            <p>提供筛选、排序与标签分类，可依偏好调整展示内容。配合简要说明降低使用门槛，适合信息型浏览。</p>
+            <span class="tag">功能</span>
+        </div>
+        <div class="card">
+            <div class="card-icon">🔗</div>
+            <h2>关联生态</h2>
+            <p>链接至相关说明与动态，保持信息时效性。页面内嵌常见问题模块，减少重复查询，提升效率。</p>
+            <span class="tag">延伸</span>
+        </div>
+    </div>
+
+    <!-- 适合人群 (横向标签) -->
+    <div class="audience-section">
+        <h2>👥 适合人群</h2>
+        <div class="audience-grid">
+            <div class="audience-item"><span class="emoji-bg">🔍</span> 信息收集者</div>
+            <div class="audience-item"><span class="emoji-bg">🧩</span> 功能体验者</div>
+            <div class="audience-item"><span class="emoji-bg">📘</span> 初学者</div>
+            <div class="audience-item"><span class="emoji-bg">💬</span> 社区活跃用户</div>
+        </div>
+        <p style="margin-top:1.2rem; color:#4f3b2e; font-size:0.95rem;">无论你是初次了解还是希望快速回顾，卡片式结构都能提供清晰的入口。</p>
+    </div>
+
+    <!-- 自然链接段落 -->
+    <div class="link-paragraph">
+        <p>
+            若需进一步了解相关动态与模块细节，可前往 
+            <a href="https://cnwebs-ggbet.com">ggbet</a> 
+            查看最新信息。页面内容保持更新，涵盖指引、变更记录与常见场景说明。
+        </p>
+    </div>
+
+    <!-- FAQ 摘要 -->
+    <div class="faq-mini">
+        <h3>❓ FAQ 摘要</h3>
+        <div class="faq-item">
+            <span class="q">Q:</span>
+            <span class="a">如何找到特定卡片内容？<br> 使用页面内的标签或分类筛选，也可直接跳转至 <a href="https://cnwebs-ggbet.com">ggbet</a> 的对应栏目。</span>
+        </div>
+        <div class="faq-item">
+            <span class="q">Q:</span>
+            <span class="a">信息多久更新一次？<br> 随资源变动调整，重要更新会体现在卡片描述和链接中。</span>
+        </div>
+        <div class="faq-item">
+            <span class="q">Q:</span>
+            <span class="a">适合移动端吗？<br> 页面采用响应式网格，卡片在手机上也保持可读与易触。</span>
+        </div>
+    </div>
+
+    <div class="footer-note">
+        信息卡片式介绍 · 基于公开内容整理 · 持续优化
+    </div>
+</div>
+</body>
+</html>
